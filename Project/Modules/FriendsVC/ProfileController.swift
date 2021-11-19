@@ -12,7 +12,7 @@ import PromiseKit
 
 class ProfileController: UIViewController {
     
-    let photoRequest = APIRequest()
+    let proxy = ApiServiceProxy(apiService: APIRequest())
     let photosDB = PhotoDatabaseService()
     
     var userPhoto = String()
@@ -40,9 +40,9 @@ class ProfileController: UIViewController {
         super.viewDidLoad()
         
         firstly {
-            self.photoRequest.getPhoto(userID: userID)
+            self.proxy.getPhoto(userID: userID)
         }.then { (data) in
-            self.photoRequest.photoPromiseParser(data)
+            self.proxy.photoPromiseParser(data)
         }.done(on: .main) { (items) in
             let url: [PhotoModel] = items.map { PhotoModel(data: $0) }
             self.photosDB.add(photos: url)
