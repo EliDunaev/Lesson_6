@@ -16,7 +16,7 @@ class FriendsTableController: UITableViewController, UISearchBarDelegate {
     
     var searchBarStatus = false
     
-    let friendsRequest = APIRequest()
+    let proxy = ApiServiceProxy(apiService: APIRequest())
     let DB = UsersDatabaseService()
     
     var token: NotificationToken?
@@ -43,7 +43,7 @@ class FriendsTableController: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.rowHeight = 60
-        friendsRequest.getFriends()
+        proxy.getFriends()
         friendsData = DB.readResults()
         searchBar.delegate = self
     }

@@ -11,7 +11,7 @@ class TableViewControllerRecomendGroups: UITableViewController, UISearchBarDeleg
     
     @IBOutlet weak var searchBar: UISearchBar!
     
-    let searchRequest = APIRequest()
+    let proxy = ApiServiceProxy(apiService: APIRequest())
     var userReccomendGroups = [GroupsModel]()
     var sendData = [GroupsModel]()
     var searchedGroups = [GroupsModel]()
@@ -25,7 +25,7 @@ class TableViewControllerRecomendGroups: UITableViewController, UISearchBarDeleg
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchRequest.searchGroups(searchText: searchText) { searchedGroups in
+        proxy.searchGroups(searchText: searchText) { searchedGroups in
             self.searchedGroups = searchedGroups
             self.sendData = searchedGroups
             DispatchQueue.main.async() {

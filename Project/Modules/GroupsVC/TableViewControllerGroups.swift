@@ -12,7 +12,7 @@ import FirebaseFirestore
 
 class TableViewControllerGroups: UITableViewController {
     
-    let groupsRequest = APIRequest()
+    let proxy = ApiServiceProxy(apiService: APIRequest())
     var userReccomendGroups = [GroupsModel]()
     var imageName = UIImage()
     let DB = GroupsDatabaseService()
@@ -26,7 +26,6 @@ class TableViewControllerGroups: UITableViewController {
                 switch changes {
                 case .initial:
                     print("INITIAL")
-//                    print(changes)
                 case .update:
                     tableView.reloadData()
                 case .error(let error):
@@ -39,7 +38,7 @@ class TableViewControllerGroups: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        groupsRequest.getGroups()
+        proxy.getGroups()
         userGroups = DB.readResults()
     }
     
@@ -100,7 +99,8 @@ class TableViewControllerGroups: UITableViewController {
                 if !userGroups!.contains(searchedGroups) {
                     DispatchQueue.main.async() {
                         do {
-                            self.fireDB.collection("Database").document(currentUser!).setData([                            "groupName": FieldValue.arrayUnion([searchedGroups.name!]),
+                            self.fireDB.collection("Database").document(currentUser!).setData([
+                                "groupName": FieldValue.arrayUnion([searchedGroups.name!]),
                                 "groupPhoto": FieldValue.arrayUnion([searchedGroups.photo50!]),
                                 "userID": userID!
                             ],merge: true) { err in

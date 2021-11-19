@@ -10,7 +10,7 @@ import Alamofire
 import DynamicJSON
 import PromiseKit
 
-final class APIRequest {
+class APIRequest: ApiServicesProtocol {
     
     let baseUrl = "https://api.vk.com/method"
     let token = VKSession.currentSession.token
